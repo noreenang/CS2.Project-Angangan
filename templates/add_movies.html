@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Movie - Movie Ratings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>➕ Add a Movie</h1>
+    <form method="POST">
+        <input type="text" name="title" placeholder="Movie Title" required>
+        <input type="text" name="genre" placeholder="Genre" required>
+        <input type="number" name="rating" min="1" max="10" placeholder="Rating (1-10)" required>
+        <textarea name="review" placeholder="Write your review..."></textarea>
+        <button type="submit">Add Movie</button>
+    </form>
+    <div class="nav">
+        <a href="/dashboard">⬅️ Back to Dashboard</a>
+    </div>
+</div>
+</body>
+</html>
+<form method="POST">
+    <input type="text" name="title" placeholder="Movie Title" required>
+    <input type="text" name="genre" placeholder="Genre" required>
+    <input type="number" name="rating" min="1" max="10" placeholder="Rating (1-10)" required>
+    <textarea name="review" placeholder="Write your review..."></textarea>
+    <input type="text" name="poster" placeholder="Poster URL (optional)">
+    <button type="submit">Add Movie</button>
+</form>
+<input type="text" name="poster" placeholder="Poster URL (optional)">

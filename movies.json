@@ -1,0 +1,20 @@
+{
+    "movies": [
+        {
+            "id": 1,
+            "title": "Inception",
+            "genre": "Sci-Fi",
+            "rating": 9,
+            "review": "Mind-bending and visually stunning!",
+            "poster": "static/posters/inception.jpg"
+        },
+        {
+            "id": 2,
+            "title": "The Godfather",
+            "genre": "Crime",
+            "rating": 10,
+            "review": "A cinematic masterpiece.",
+            "poster": "static/posters/godfather.jpg"
+        }
+    ]
+}
