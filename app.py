@@ -1,141 +1,179 @@
-from flask import Flask, render_template, request, redirect, session, url_for
-import json, os
 
+from flask import Flask, render_template, request, redirect, url_for, flash
+import json
+import os
+from werkzeug.utils import secure_filename
+
+# ---------------------
+# Configuration
+# ---------------------
 app = Flask(__name__)
-app.secret_key = "secret"
+app.secret_key = "CS2_PROJECT_SECRET_KEY"
+UPLOAD_FOLDER = "static/uploads"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-# ---------- Files ----------
-USERS_FILE = "users.json"
-MOVIES_FILE = "movies.json"
+MOVIE_FILE = "movies.json"
+USER_FILE = "users.json"
 
-# ---------- Setup ----------
-def init_files():
-    """Create JSON files if they don't exist."""
-    if not os.path.exists(USERS_FILE):
-        with open(USERS_FILE, "w") as f:
-            json.dump({"users": []}, f, indent=4)
-
-    if not os.path.exists(MOVIES_FILE):
-        with open(MOVIES_FILE, "w") as f:
-            json.dump({"movies": []}, f, indent=4)
-
-def load(file):
-    with open(file, "r") as f:
+# ---------------------
+# Helper Functions
+# ---------------------
+def load_json(file_path):
+    if not os.path.exists(file_path):
+        return []
+    with open(file_path, "r") as f:
         return json.load(f)
 
-def save(file, data):
-    with open(file, "w") as f:
+def save_json(file_path, data):
+    with open(file_path, "w") as f:
         json.dump(data, f, indent=4)
 
-def next_id(movies):
-    """Generate next unique ID for movies."""
-    return max([m["id"] for m in movies], default=0) + 1
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# ---------- LOGIN ----------
-@app.route("/", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        users = load(USERS_FILE)["users"]
-        username = request.form["username"]
-        password = request.form["password"]
-        for u in users:
-            if u["username"] == username and u["password"] == password:
-                session["user"] = username
-                return redirect("/dashboard")
-        return render_template("login.html", error="Invalid username or password")
-    return render_template("login.html")
+# ---------------------
+# Routes
+# ---------------------
 
-# ---------- REGISTER ----------
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        if not username or not password:
-            return render_template("register.html", error="All fields are required")
-        data = load(USERS_FILE)
-        # Check if username exists
-        if any(u["username"] == username for u in data["users"]):
-            return render_template("register.html", error="Username already taken")
-        data["users"].append({"username": username, "password": password})
-        save(USERS_FILE, data)
-        return redirect("/")
-    return render_template("register.html")
+# Homepage - display movies
+@app.route("/")
+def index():
+    movies = load_json(MOVIE_FILE)
+    genre_filter = request.args.get("genre")
+    rating_filter = request.args.get("rating")
+    
+    # Filter by genre
+    if genre_filter:
+        movies = [m for m in movies if m["genre"].lower() == genre_filter.lower()]
+    # Filter by rating (>= selected)
+    if rating_filter:
+        movies = [m for m in movies if float(m["rating"]) >= float(rating_filter)]
+    
+    return render_template("index.html", movies=movies)
 
-# ---------- DASHBOARD ----------
-@app.route("/dashboard")
-def dashboard():
-    if "user" not in session:
-        return redirect("/")
-    movies = load(MOVIES_FILE)["movies"]
-    return render_template("dashboard.html", movies=movies, user=session["user"])
-
-# ---------- ADD MOVIE ----------
+# Add new movie
 @app.route("/add", methods=["GET", "POST"])
 def add_movie():
-    if "user" not in session:
-        return redirect("/")
     if request.method == "POST":
-        title = request.form.get("title")
-        genre = request.form.get("genre")
-        review = request.form.get("review")
-        poster = request.form.get("poster", "")
-        try:
-            rating = int(request.form.get("rating", 0))
-            if rating < 1 or rating > 10:
-                raise ValueError
-        except ValueError:
-            return render_template("add_movie.html", error="Rating must be 1-10")
-        if not title or not genre:
-            return render_template("add_movie.html", error="Title and genre are required")
+        title = request.form.get("title").strip()
+        genre = request.form.get("genre").strip()
+        rating = request.form.get("rating").strip()
+        review = request.form.get("review").strip()
+        description = request.form.get("description", "").strip()
+        photo = request.files.get("photo")
+        filename = ""
 
-        data = load(MOVIES_FILE)
-        data["movies"].append({
-            "id": next_id(data["movies"]),
+        # Validate inputs
+        if not title or not genre or not rating:
+            flash("Title, genre, and rating are required!", "error")
+            return redirect(request.url)
+
+        # Handle photo upload
+        if photo and allowed_file(photo.filename):
+            filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+
+        movies = load_json(MOVIE_FILE)
+        # Check for duplicate title
+        if any(m["title"].lower() == title.lower() for m in movies):
+            flash("Movie with this title already exists!", "error")
+            return redirect(request.url)
+
+        movies.append({
             "title": title,
             "genre": genre,
             "rating": rating,
             "review": review,
-            "poster": poster
+            "description": description,
+            "photo": filename
         })
-        save(MOVIES_FILE, data)
-        return redirect("/dashboard")
+        save_json(MOVIE_FILE, movies)
+        flash(f"{title} added successfully!", "success")
+        return redirect(url_for("index"))
+
     return render_template("add_movie.html")
 
-# ---------- DELETE MOVIE ----------
-@app.route("/delete/<int:id>")
-def delete(id):
-    if "user" not in session:
-        return redirect("/")
-    data = load(MOVIES_FILE)
-    data["movies"] = [m for m in data["movies"] if m["id"] != id]
-    save(MOVIES_FILE, data)
-    return redirect("/dashboard")
+# Edit existing movie
+@app.route("/edit/<string:title>", methods=["GET", "POST"])
+def edit_movie(title):
+    movies = load_json(MOVIE_FILE)
+    movie = next((m for m in movies if m["title"] == title), None)
+    if not movie:
+        flash("Movie not found!", "error")
+        return redirect(url_for("index"))
 
-# ---------- STATS ----------
-@app.route("/stats")
-def stats():
-    if "user" not in session:
-        return redirect("/")
-    movies = load(MOVIES_FILE)["movies"]
+    if request.method == "POST":
+        new_title = request.form.get("title").strip()
+        genre = request.form.get("genre").strip()
+        rating = request.form.get("rating").strip()
+        review = request.form.get("review").strip()
+        description = request.form.get("description", "").strip()
+        photo = request.files.get("photo")
 
-    genres = {}
+        if not new_title or not genre or not rating:
+            flash("Title, genre, and rating are required!", "error")
+            return redirect(request.url)
+
+        # Update photo if uploaded
+        if photo and allowed_file(photo.filename):
+            filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            movie["photo"] = filename
+
+        movie.update({
+            "title": new_title,
+            "genre": genre,
+            "rating": rating,
+            "review": review,
+            "description": description
+        })
+
+        save_json(MOVIE_FILE, movies)
+        flash(f"{new_title} updated successfully!", "success")
+        return redirect(url_for("index"))
+
+    return render_template("edit_movie.html", movie=movie)
+
+# Delete movie
+@app.route("/delete/<string:title>")
+def delete_movie(title):
+    movies = load_json(MOVIE_FILE)
+    movies = [m for m in movies if m["title"] != title]
+    save_json(MOVIE_FILE, movies)
+    flash(f"{title} deleted successfully!", "success")
+    return redirect(url_for("index"))
+
+# Movie details
+@app.route("/movie/<string:title>")
+def movie_details(title):
+    movies = load_json(MOVIE_FILE)
+    movie = next((m for m in movies if m["title"] == title), None)
+    if not movie:
+        flash("Movie not found!", "error")
+        return redirect(url_for("index"))
+    return render_template("movie_details.html", movie=movie)
+
+# Metrics page
+@app.route("/metrics")
+def metrics():
+    movies = load_json(MOVIE_FILE)
+    genre_avg = {}
+    genre_count = {}
     for m in movies:
-        genres.setdefault(m["genre"], []).append(m["rating"])
+        g = m["genre"]
+        genre_count[g] = genre_count.get(g, 0) + 1
+        genre_avg[g] = genre_avg.get(g, 0) + float(m["rating"])
+    
+    genre_avg = {g: round(genre_avg[g]/genre_count[g], 2) for g in genre_avg}
+    most_watched = max(genre_count, key=genre_count.get) if genre_count else "N/A"
+    top_rated = max(movies, key=lambda x: float(x["rating"]))["title"] if movies else "N/A"
+    
+    return render_template("metrics.html", genre_avg=genre_avg, most_watched=most_watched, top_rated=top_rated)
 
-    avg = {g: round(sum(r)/len(r), 2) for g, r in genres.items()}
-    most = max(genres, key=lambda g: len(genres[g]), default=None)
-    top = max(movies, key=lambda m: m["rating"], default=None)
-
-    return render_template("stats.html", avg=avg, most=most, top=top)
-
-# ---------- LOGOUT ----------
-@app.route("/logout")
-def logout():
-    session.pop("user", None)
-    return redirect("/")
-
-# ---------- RUN ----------
+# ---------------------
+# Run the app
+# ---------------------
 if __name__ == "__main__":
-    init_files()  # Make sure JSON files exist before running
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     app.run(debug=True)
