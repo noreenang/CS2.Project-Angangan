@@ -1,5 +1,9 @@
 {
-  "files.associations": {
-    "*.html": "jinja-html"
-  }
+    "python-envs.pythonProjects": [
+        {
+            "path": "CS2.Project-Angangan",
+            "envManager": "ms-python.python:venv",
+            "packageManager": "ms-python.python:pip"
+        }
+    ]
 }

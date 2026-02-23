@@ -1,0 +1,956 @@
+
+/* PAGE FADE IN */
+body {
+    animation: fadeInPage 0.8s ease-in-out;
+}
+
+@keyframes fadeInPage {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.site-header {
+    animation: slideDown 0.6s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.auth-container {
+    animation: popIn 0.6s ease forwards;
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+button,
+.add-btn,
+.login-btn,
+.register-btn,
+.logout-btn {
+    transition: all 0.3s ease;
+}
+
+button:hover,
+.add-btn:hover,
+.login-btn:hover,
+.register-btn:hover,
+.logout-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.flash,
+.flash-messages {
+    animation: flashSlide 0.5s ease;
+}
+
+@keyframes flashSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.flash {
+    animation: flashSlide 0.5s ease, fadeOut 0.5s ease 4s forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.movie-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.movie-card {
+    animation: fadeUp 0.6s ease forwards;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* READ-ONLY STARS (Movie cards) */
+.movies-grid .stars {
+    display: flex;
+    flex-direction: row; /* left-to-right */
+    justify-content: flex-start;
+    font-size: 3rem;  /* adjust as needed */
+    margin: 0.3rem 0;
+}
+
+.movies-grid .stars .star {
+    color: #444;
+}
+
+.movies-grid .stars .star.selected {
+    color: var(--gold);
+}
+
+/* INTERACTIVE STARS (Add/Edit Movie Forms) */
+.add-movie .stars,
+.edit-movie .stars {
+    display: flex;
+    flex-direction: row; /* right-to-left highlighting */
+    justify-content: center;
+    gap: 10px;
+    font-size: 4rem;
+}
+
+.add-movie .stars label,
+.edit-movie .stars label {
+    color: #ccc;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.add-movie .stars label:hover,
+.add-movie .stars label:hover ~ label,
+.edit-movie .stars label:hover,
+.edit-movie .stars label:hover ~ label {
+    color: var(--gold);
+}
+
+.add-movie .stars input:checked ~ label,
+.edit-movie .stars input:checked ~ label {
+    color: var(--gold);
+}
+
+
+/* BIGGER STAR RATING */
+.stars {
+    display: flex;
+    gap: 10px;
+}
+
+.stars label {
+    cursor: pointer;
+}
+
+.stars input {
+    display: none;
+}
+
+.star {
+    font-size: 3.5rem;   
+    color: #ccc;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.star:hover {
+    transform: scale(1.3);
+    color: gold;
+}
+
+body {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+/* Add/Edit Movie */
+.add-movie .stars label,
+.edit-movie .stars label {
+    font-size: 4rem;
+}
+
+/* For movie grid stars (read-only) */
+.movies-grid .stars {
+    display: flex;
+    flex-direction: row; /* keeps the stars visually right-to-left */
+    justify-content: center;
+    gap: 10px;
+    font-size: 3rem;
+}
+
+.movies-grid .stars .star {
+    color: #444;
+}
+
+/* Apply right-to-left highlighting */
+.movies-grid .stars .star.selected {
+    color: var(--gold);
+}
+
+/* Optional: If dynamically using input:checked inside .movies-grid stars */
+.movies-grid .stars input:checked ~ label {
+    color: #444; /* do nothing for movie list since these are static read-only stars */
+}
+
+
+/* ===============================
+   CINEMA THEATER THEME
+   =============================== */
+
+/* Google Font Feel */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Montserrat:wght@300;400;600&display=swap');
+
+:root {
+    --velvet-red: #7a0000;
+    --deep-red: #4d0000;
+    --gold: #d4af37;
+    --dark-bg: #0f0f0f;
+    --card-bg: #1a1a1a;
+    --soft-white: #f5f5f5;
+}
+
+/* Body */
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: radial-gradient(circle at top, #1c1c1c 0%, #000 80%);
+    color: var(--soft-white);
+    min-height: 100vh;
+}
+
+/* Header */
+.site-header {
+    background: linear-gradient(to bottom, var(--velvet-red), var(--deep-red));
+    padding: 20px;
+    text-align: center;
+    border-bottom: 4px solid var(--gold);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+}
+
+.site-header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    margin: 0;
+    color: var(--gold);
+    letter-spacing: 2px;
+}
+
+/* Navigation */
+nav a {
+    color: var(--soft-white);
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--gold);
+}
+
+/* Main Container */
+.container {
+    width: 85%;
+    margin: 40px auto;
+}
+
+/* Movie Cards */
+.movie-card {
+    display: flex;             /* make stars inline-flex */
+    flex-direction: row;
+    justify-content: flex-start;
+    background: var(--card-bg);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
+}
+
+.movie-card h2 {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    margin-top: 0;
+}
+
+.movie-card p {
+    opacity: 0.9;
+}
+
+/* Buttons */
+button,
+.btn {
+    background: var(--velvet-red);
+    color: white;
+    border: 2px solid var(--gold);
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+button:hover,
+.btn:hover {
+    background: var(--gold);
+    color: black;
+}
+
+/* Forms */
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 15px 0;
+    background: #111;
+    border: 2px solid var(--gold);
+    color: white;
+    border-radius: 6px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--velvet-red);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #000;
+    border-top: 3px solid var(--gold);
+    margin-top: 50px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* Cinematic Spotlight Effect */
+body::before {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ===============================
+   AUTH PAGES – LOGIN & REGISTER
+   =============================== */
+
+.auth-container {
+    max-width: 420px;
+    margin: 8vh auto;
+    padding: 2.5rem;
+    background: var(--card-bg);
+    border: 2px solid var(--gold);
+    border-radius: 15px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    position: relative;
+    backdrop-filter: blur(4px);
+}
+
+.auth-container h1 {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* Flash Messages */
+.flash-messages p {
+    background: rgba(122, 0, 0, 0.35);
+    border: 1px solid var(--gold);
+    color: var(--soft-white);
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+}
+
+/* Form Layout */
+.auth-form .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.4rem;
+    text-align: right;
+}
+
+.auth-form label {
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: var(--gold);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.auth-form input {
+    padding: 0.8rem 1rem;
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    background: #111;
+    color: white;
+    font-size: 0.95rem;
+    transition: 0.3s ease;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: var(--velvet-red);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+/* Button */
+.auth-form .btn {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 12px;
+    background: var(--velvet-red);
+    border: 2px solid var(--gold);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-form .btn:hover {
+    background: var(--gold);
+    color: black;
+    transform: translateY(-2px);
+}
+
+/* Switch Link */
+.switch {
+    margin-top: 1.6rem;
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+
+.switch a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.switch a:hover {
+    text-decoration: underline;
+}
+
+/* Subtle spotlight glow */
+.auth-container::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 18px;
+    background: radial-gradient(circle at top, rgba(212,175,55,0.15), transparent 70%);
+    z-index: -1;
+}
+
+/* ===============================
+   ADD / EDIT MOVIE PAGE
+   =============================== */
+
+/* Page Title */
+.page-title {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* Textareas */
+.auth-form textarea {
+    padding: 0.9rem 1rem;
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    background: #111;
+    color: white;
+    font-size: 0.95rem;
+    min-height: 120px;
+    resize: vertical;
+    transition: 0.3s ease;
+}
+
+.auth-form textarea:focus {
+    outline: none;
+    border-color: var(--velvet-red);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+/* File Input */
+.auth-form input[type="file"] {
+    background: #111;
+    color: white;
+    border: 2px dashed var(--gold);
+    padding: 0.8rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.auth-form input[type="file"]::file-selector-button {
+    background: var(--velvet-red);
+    border: 2px solid var(--gold);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: 0.3s ease;
+}
+
+.auth-form input[type="file"]::file-selector-button:hover {
+    background: var(--gold);
+    color: black;
+}
+
+/* Star Rating */
+.stars {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* centers horizontally */
+    gap: 10px;
+    font-size: 3.5rem;
+}
+
+.stars input {
+    display: none;
+}
+
+.stars label {
+    color: #ccc;
+    font-size: 3rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.stars label:hover,
+.stars label:hover ~ label {
+    color: var(--gold);
+}
+
+.stars input:checked ~ label {
+    color: var(--gold);
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+    background: var(--velvet-red);
+    border: 2px solid var(--gold);
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: var(--gold);
+    color: black;
+    transform: translateY(-2px);
+}
+
+/* Flash Styling (for this page's .flash class) */
+.flash p {
+    background: rgba(122, 0, 0, 0.35);
+    border: 1px solid var(--gold);
+    color: var(--soft-white);
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.2rem;
+}
+
+/* ===============================
+   INDEX PAGE – MOVIE COLLECTION
+   =============================== */
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    margin: 3rem 0 2rem 0;
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* Grid Layout */
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2.5rem;
+    padding: 0 3rem 3rem 3rem;
+}
+
+/* Movie Card */
+.movie-card {
+    background: var(--card-bg);
+    border: 2px solid var(--gold);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    transition: all 0.35s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 60px rgba(212, 175, 55, 0.25);
+}
+
+/* Poster */
+.poster img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-bottom: 2px solid var(--gold);
+}
+
+.poster .placeholder {
+    width: 100%;
+    height: 380px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+}
+
+/* Info Section */
+.movie-info {
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Title */
+.movie-info h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin: 0;
+}
+
+/* Genre */
+.genre {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    opacity: 0.7;
+}
+
+/* Stars */
+.stars {
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size: 9rem;
+    margin: 0.3rem 0;
+}
+
+.stars .star {
+    color: #444;
+}
+
+.stars .star.selected {
+    color: var(--gold);
+}
+
+/* Review Preview */
+.review {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    line-height: 1.4;
+    min-height: 50px;
+}
+
+/* Buttons */
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+.actions .btn {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid var(--gold);
+    transition: all 0.3s ease;
+}
+
+/* View */
+.actions .btn {
+    background: var(--velvet-red);
+    color: white;
+}
+
+/* Edit */
+.actions .btn.edit {
+    background: #300000;
+    color: white;
+}
+
+/* Delete */
+.actions .btn.delete {
+    background: black;
+    color: var(--gold);
+}
+
+/* Hover Effect */
+.actions .btn:hover {
+    background: var(--gold);
+    color: black;
+    transform: translateY(-2px);
+}
+
+/* Empty State */
+.movies-grid p {
+    text-align: center;
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.movies-grid a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.movies-grid a:hover {
+    text-decoration: underline;
+}
+
+/* ===============================
+   BASE LAYOUT – CINEMA THEME
+   =============================== */
+
+/* Global Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: radial-gradient(circle at top, #1a1a1a 0%, #000 80%);
+    color: var(--soft-white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Container Utility */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* ================= HEADER ================= */
+
+.site-header {
+    background: linear-gradient(to bottom, var(--velvet-red), var(--deep-red));
+    border-bottom: 4px solid var(--gold);
+    padding: 1.2rem 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo */
+.logo a {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 2px;
+}
+
+/* Nav */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-weight: 600;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+/* Hover glow */
+.nav-links a:hover {
+    border: 2px solid var(--gold);
+    background: rgba(212, 175, 55, 0.1);
+}
+
+/* Special Buttons */
+.add-btn {
+    background: var(--velvet-red);
+    border: 2px solid var(--gold);
+}
+
+.login-btn,
+.register-btn,
+.logout-btn {
+    border: 2px solid var(--gold);
+}
+
+.logout-btn {
+    background: #300000;
+}
+
+/* User Info */
+.user-info {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+/* ================= FLASH ================= */
+
+.flash-messages {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.flash {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: rgba(122, 0, 0, 0.4);
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* ================= MAIN ================= */
+
+.main-container {
+    flex: 1;
+    padding: 2rem 0;
+}
+
+/* ================= FOOTER ================= */
+
+.site-footer {
+    background: #000;
+    border-top: 3px solid var(--gold);
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* ================= SPOTLIGHT EFFECT ================= */
+
+body::before {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.04), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* FORCE RIGHT → LEFT STAR FILL (ADD/EDIT ONLY) */
+.auth-container .stars {
+    display: flex;
+    flex-direction: row-reverse;  /* THIS is the key */
+    justify-content: center;
+    gap: 10px;
+}
+
+.auth-container .stars input {
+    display: none;
+}
+
+.auth-container .stars label {
+    cursor: pointer;
+    font-size: 3.5rem;
+    color: #444;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover effect */
+.auth-container .stars label:hover,
+.auth-container .stars label:hover ~ label {
+    color: var(--gold);
+    transform: scale(1.2);
+}
+
+/* Selected effect */
+.auth-container .stars input:checked ~ label {
+    color: var(--gold);
+}
+

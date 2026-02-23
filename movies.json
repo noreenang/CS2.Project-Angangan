@@ -1,26 +1,22 @@
 [
-  {
-    "title": "Inception",
-    "genre": "Sci-Fi",
-    "rating": "5",
-    "review": "Mind-bending and visually stunning.",
-    "description": "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea.",
-    "photo": "inception.jpg"
-  },
-  {
-    "title": "The Lion King",
-    "genre": "Animation",
-    "rating": "4",
-    "review": "Heartwarming story with great music.",
-    "description": "Young lion Simba flees his kingdom only to learn the true meaning of responsibility and bravery.",
-    "photo": "lionking.jpg"
-  },
-  {
-    "title": "The Godfather",
-    "genre": "Crime",
-    "rating": "5",
-    "review": "Classic mafia drama, a masterpiece.",
-    "description": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-    "photo": "godfather.jpg"
-  }
+    {
+        "id": 1,
+        "title": "The Bee Movie",
+        "genre": "Comedy",
+        "rating": 5.0,
+        "review": "odd!",
+        "description": "what was the vision",
+        "image": "beemover.jpg",
+        "owner": "admin"
+    },
+    {
+        "id": 2,
+        "title": "Spider-Man: Across the Spider-Verse",
+        "genre": "Action",
+        "rating": 5.0,
+        "review": "awesome",
+        "description": "amazing",
+        "image": "acrossthespiderverse.jpg",
+        "owner": "admin"
+    }
 ]

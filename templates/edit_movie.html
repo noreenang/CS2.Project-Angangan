@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="auth-container">
+    <h1 class="page-title">
+        {% if movie is defined and movie %}
+            Edit Movie 🎬
+        {% else %}
+            Add Movie 🎬
+        {% endif %}
+    </h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data" class="auth-form">
+        <!-- Movie Title -->
+        <div class="input-group">
+            <label for="title">Movie Title</label>
+            <input type="text" name="title" id="title" value="{{ movie.title if movie else '' }}" placeholder="Enter movie title" required>
+        </div>
+
+        <!-- Genre -->
+        <div class="input-group">
+            <label for="genre">Genre</label>
+            <input type="text" name="genre" id="genre" value="{{ movie.genre if movie else '' }}" placeholder="Action, Comedy..." required>
+        </div>
+
+        <!-- Description -->
+        <div class="input-group">
+            <label for="description">Description (Optional)</label>
+            <textarea name="description" id="description" placeholder="Brief description">{{ movie.description if movie else '' }}</textarea>
+        </div>
+
+        <!-- Review -->
+        <div class="input-group">
+            <label for="review">Review</label>
+            <textarea name="review" id="review" placeholder="Your review" required>{{ movie.review if movie else '' }}</textarea>
+        </div>
+
+        <!-- Movie Poster -->
+        <div class="input-group">
+            <label for="image">Movie Poster</label>
+            <input type="file" name="image" id="image" accept="image/*">
+        </div>
+
+        <div class="stars">
+    {% for i in range(5, 0, -1) %}
+        <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}"
+            {% if movie and i == movie.rating|int %}checked{% endif %}>
+        <label for="star{{ i }}" class="star">★</label>
+    {% endfor %}
+</div>
+
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn">
+            {% if movie is defined and movie %}
+                Update Movie
+            {% else %}
+                Add Movie
+            {% endif %}
+        </button>
+    </form>
+</div>
+
+
+
+
+{% endblock %}
+
+
+
+
+

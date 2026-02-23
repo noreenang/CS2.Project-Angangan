@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}{{ movie.title }}{% endblock %}
+
+{% block content %}
+<div class="movie-details-container">
+   <div class="poster-section">
+    {% if movie.image %}
+        <img src="{{ url_for('static', filename='uploads/' + movie.image) }}" alt="{{ movie.title }}">
+    {% else %}
+        <div class="placeholder">No Image</div>
+    {% endif %}
+</div>
+
+
+    <div class="info-section">
+        <h1>{{ movie.title }}</h1>
+        <p class="genre">{{ movie.genre }}</p>
+        <p class="added-by"><strong>Added by:</strong> {{ movie.owner }}</p>
+
+
+        <div class="stars">
+            {% for i in range(1,6) %}
+                <span class="star {% if i <= movie.rating|int %}selected{% endif %}">★</span>
+            {% endfor %}
+        </div>
+
+        <p class="description"><strong>Description:</strong> {{ movie.description or "No description provided." }}</p>
+        <p class="review"><strong>Review:</strong> {{ movie.review or "No review yet." }}</p>
+
+        <div class="actions">
+
+    {% if user == movie.owner %}
+        <a href="{{ url_for('edit_movie', id=movie.id) }}" class="btn edit">Edit Movie</a>
+        <a href="{{ url_for('delete_movie', id=movie.id) }}" class="btn delete"
+           onclick="return confirm('Are you sure?')">Delete Movie</a>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}" class="btn back">Back to List</a>
+</div>
+
+    </div>
+</div>
+
+<style>
+.movie-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.poster-section img {
+    width: 350px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.poster-section .placeholder {
+    width: 350px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eee;
+    color: #999;
+    font-size: 1.2rem;
+    border-radius: 10px;
+}
+
+.info-section {
+    max-width: 700px;
+    text-align: center;
+}
+
+.info-section h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.genre {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.stars {
+    font-size: 1.2rem;
+    color: #f5b50a;
+    margin-bottom: 1rem;
+}
+
+.stars .star {
+    margin: 0 2px;
+}
+
+.description, .review {
+    margin: 0.5rem 0;
+    color: #333;
+    text-align: left;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.actions .btn {
+    padding: 0.6rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+}
+
+.actions .btn.edit {
+    background-color: #28a745;
+}
+
+.actions .btn.delete {
+    background-color: #dc3545;
+}
+
+.actions .btn.back {
+    background-color: #007bff;
+}
+
+.actions .btn:hover {
+    opacity: 0.9;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    .movie-details-container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .poster-section, .info-section {
+        flex: 1;
+    }
+
+    .info-section {
+        text-align: left;
+        padding-left: 2rem;
+    }
+}
+</style>
+
+
+{% endblock %}
+
