@@ -1,15 +1,15 @@
-# CS2.PROJECT-ANGANGAN 🎬🍿
+ CS2.PROJECT-ANGANGAN 🎬🍿
 
-**Movie Ratings Database – Movie Theatre Themed Web App**  
+Movie Ratings Database – Movie Theatre Themed Web App**  
 
-This project is a cinematic, movie-theatre-themed web application built using **Python/Flask**, **HTML/CSS**, and **JavaScript**.  
+This project is a cinematic, movie-theatre-themed web application built using **Python/Flask** and **HTML/CSS**
 It allows users to add, rate, and review movies with interactive 5-star ratings, upload movie posters, and view cinematic metrics like top-rated movies and most-watched genres.
 
 ---
 
-## 🎯 Features
+🎯 Features
 
-### User Features
+User Features
 - User registration & login
 - Add, edit, and delete movies
 - Rate movies using **5-star interactive system**
@@ -18,12 +18,12 @@ It allows users to add, rate, and review movies with interactive 5-star ratings,
 - Filter movies by genre or rating
 - View movie details in a cinematic layout
 
-### Metrics & Reports
+Metrics & Reports
 - Average rating per genre
 - Most-watched genre
 - Top-rated movie
 
-### UI/UX
+UI/UX
 - **Movie theatre theme** with dark background and golden accents
 - Loading screen with spotlight animation
 - Hover effects for movie cards
@@ -33,7 +33,7 @@ It allows users to add, rate, and review movies with interactive 5-star ratings,
 
 ---
 
-## 💻 Installation & Setup
+ 💻 Installation & Setup
 
 1. **Clone the repository**
 ```bash

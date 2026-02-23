@@ -63,16 +63,23 @@ def register():
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
+        confirm_password = request.form.get("confirm_password", "").strip()
         users = load_json(USERS_FILE)
 
+        # --- Basic validation ---
         if not username or not password:
             flash("Username and password cannot be empty")
+            return redirect(url_for("register"))
+
+        if password != confirm_password:
+            flash("Passwords do not match")
             return redirect(url_for("register"))
 
         if any(u["username"] == username for u in users):
             flash("Username already exists")
             return redirect(url_for("register"))
 
+        # --- Save user only after validation passes ---
         users.append({"username": username, "password": password})
         save_json(USERS_FILE, users)
 
@@ -80,7 +87,7 @@ def register():
         return redirect(url_for("login"))
 
     return render_template("register.html")
-
+    
 # --- Movie CRUD ---
 @app.route("/add", methods=["GET", "POST"])
 def add_movie():
